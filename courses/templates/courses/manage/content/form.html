@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+<main>
 	<h1>
 		{% if object %}
 			Edit content "{{ object.title }}"
@@ -24,4 +25,5 @@
 			<p><input type="submit" value="Save"></p>
 		</form>
 	</div>
+</main>
 {% endblock %}

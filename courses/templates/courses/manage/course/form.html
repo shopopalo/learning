@@ -1,27 +1,44 @@
 {% extends "base.html" %}
 
+{% load add_class %}
+
 {% block title %}
 	{% if object %}
-		Edit course "{{ object.title }}"
+		Модифікування курсу "{{ object.title }}"
 	{% else %}
-		Create new course
+		Створення нового курсу
 	{% endif %}
 {% endblock %}
 
 {% block content %}
-	<h1>
-		{% if object %}
-			Edit course "{{ object.title }}"
-		{% else %}
-			Create a new course
-		{% endif %}
-	</h1>
-	<div class="module">
-		<h2>Course info</h2>
-		<form action="." method="POST">
-			{{ form.as_p }}
-			{% csrf_token %}
-			<p><input type="submit" value="Save course"></p>
-		</form>
+<main>
+	<div class="container">
+		<h2>
+			{% if object %}
+				Модифікування курсу "{{ object.title }}"
+			{% else %}
+				Створення нового курсу
+			{% endif %}
+		</h2>
+		<div class="demo-card-course">
+			<h3>Іноформація про курс</h3>
+			<form action="." method="POST">
+				{{ form.subject.label_tag }}
+				{{ form.subject|addclass:"form-control border-input" }}
+				<br />
+				{{ form.title.label_tag }}
+				{{ form.title|addclass:"form-control border-input" }}
+				<br />
+				{{ form.slug.label_tag }}
+				{{ form.slug|addclass:"form-control border-input" }}
+				<br />
+				{{ form.overview.label_tag }}
+				{{ form.overview|addclass:"form-control border-input" }}
+				{% csrf_token %}
+				<br />
+				<p><input class="btn btn-fill btn-success" type="submit" value="Save course"></p>
+			</form>
+		</div>
 	</div>
+</main>
 {% endblock %}

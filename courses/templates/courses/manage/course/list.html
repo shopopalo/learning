@@ -1,30 +1,116 @@
 {% extends "base.html" %}
 
-{% block title %}My courses{% endblock %}
+{% block title %}Мої курси{% endblock %}
 
 {% block content %}
-	<h1>My courses</h1>
-
-	<div class="module">
-		{% for course in object_list %}
-			<div class="course-info">
-				<h3>{{ course.title }}</h3>
-				<p>
-					<a href="{% url 'course_edit' course.id %}">Edit</a>
-					<a href="{% url 'course_delete' course.id %}">Delete</a>
-					<a href="{% url 'course_module_update' course.id %}">Edit modules</a>
-					{% if course.modules.count > 0 %}
-						<a href="{% url 'module_content_list' course.modules.first.id %}">
-							Manage contents
-						</a>
-					{% endif %}
-				</p>
-			</div>
-		{% empty %}
-			<p>You haven't created any courses yet.</p>
-		{% endfor %}
-		<p>
-			<a href="{% url 'course_create' %}" class="button">Create new course</a>
-		</p>
+<main>
+	<div class="section-nude-gray">
+		<div class="container">
+			<h3>
+				Мої курси
+				<a href="{% url 'course_create' %}" class="pull-right new-course">Створити новий курс</a>
+			</h3>
+		</div>
 	</div>
+
+	<div class="container">
+		<div class="row">
+			{% for course in object_list %}
+				<div class="col-md-4 col-sm-6">
+					<div class="card card-just-text" data-background="color" data-color="blue">
+						<div class="content text center">
+							<h6 class="category">
+								{{ course.subject }}
+							</h6>
+							<h4 class="title">{{ course.title }}</h4>
+						</div>
+						<div class="card-footer btn-center">
+							<div id="dropUpDiv" class="dropup">
+								<button id="dLabel" type="button" class="btn btn-block btn-fill" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="dropupClick()">Дії над курсом
+								</button>
+								<ul class="dropdown-menu dropdown-actions dropdown-menu-right dropdown-medium">
+									<li><a href="{% url 'course_edit' course.id %}" class="action-line">
+										<div>Модифікувати</div>
+									</a></li>
+									<li class="divider"></li>
+									<li><a href="{% url 'course_module_update' course.id %}" class="action-line">
+										<div>Змінити модулі</div>
+									</a></li>
+
+									{% if course.modules.count > 0 %}
+										<li class="divider"></li>
+										<li><a href="{% url 'module_content_list' course.modules.first.id %}" class="action-line">
+											<div>Управління контентом</div>
+										</a></li>
+									{% endif %}
+
+									<li class="divider"></li>
+									<li><a id="showModal" href="{% url 'course_delete' course.id %}" class="action-line" data-toggle="modal" data-target="#smallAlertModal">
+										<div>Видалити</div>
+									</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% empty %}
+				<p>
+					Ви ще не створили не одного курсу. 
+				</p>
+			{% endfor %}
+		</div>
+	</div>
+</main>
+
+
+<div class="modal fade" id="smallAlertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-small ">
+    <div class="modal-content">
+      <div class="modal-header no-border-header">
+        <button onclick="closeModal()" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        <h5>Ви дійсно хочете видалити курс? </h5>
+      </div>
+      <div class="modal-footer">
+        <div class="left-side">
+            <button type="button" class="btn btn-default btn-simple" data-dismiss="modal" onclick="closeModal()">Ні</button>
+        </div>
+        <div class="divider"></div>
+        <div class="right-side">
+            <button type="button" class="btn btn-danger btn-simple">
+                <a href="" id="yesDeleteCourse">Так</a>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+		var dropUpDiv = document.getElementById('dropUpDiv');
+		var dropUpBtn = document.getElementById('dLabel');
+		function dropupClick() {
+			//if (dropUpDiv.classList.contains('open')) {
+
+			//}
+			dropUpDiv.classList.toggle('open');
+		}
+		var modal = document.getElementById('smallAlertModal');
+		function showModal(e) {
+			e.preventDefault();
+			modal.classList.add('in', 'view');
+			var href = this.getAttribute('href');
+			console.log(href);
+			var yesDeleteCourseBtn = document.getElementById('yesDeleteCourse');
+			yesDeleteCourseBtn.setAttribute('href', href);
+		}
+		function closeModal() {
+			modal.classList.remove('in');
+			modal.classList.remove('view');
+		}
+		document.getElementById('showModal').addEventListener('click', showModal, false);
+	</script>
 {% endblock %}

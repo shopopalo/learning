@@ -1,20 +1,24 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Edit "{{ course.title }}"
+	Редагування модулів курсу "{{ course.title }}"
 {% endblock %}
 
 {% block content %}
-	<h1>Edit "{{ course.title }}"</h1>
-	<div class="module">
-		<h2>Course modules</h2>
-		<form action="." method="POST">
-			{{ formset }}
-			<!-- management_form содержит hidden поля с initial 
-			данными, и количеством форм formset -->
-			{{ formset.management_form }}
-			{% csrf_token %}
-			<input type="submit" class="button" value="Save">
-		</form>
+<main>
+	<div class="container">
+		<h3>Редагування модулів курсу "{{ course.title }}"</h3>
+		<div class="module">
+			<h4>Course modules</h4>
+			<form action="." method="POST">
+				{{ formset.as_p }}
+				<!-- management_form содержит hidden поля с initial 
+				данными, и количеством форм formset -->
+				{{ formset.management_form }}
+				{% csrf_token %}
+				<input type="submit" class="button" value="Save">
+			</form>
+		</div>
 	</div>
+</main>
 {% endblock %}

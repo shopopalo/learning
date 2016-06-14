@@ -1,22 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}My courses{% endblock %}
+{% block title %}Мої курси{% endblock %}
 
 {% block content %}
-	<h1>My courses</h1>
-
-	<div class="module">
-		{% for course in object_list %}
-			<div class="course-info">
-				<h3>{{ course.title }}</h3>
-				<p><a href="{% url 'student_course_detail' course.id %}">Access content</a></p>
-			</div>
-		{% empty %}
-			<p>
-				You are not enrolled in any courses yet.
-				<a href="{% url 'course_list' %}">Browse courses</a>
-				to enroll in a course.
-			</p>
-		{% endfor %}
+<main>
+	<div class="section-nude-gray">
+		<div class="container">
+			<h3>
+				Мої курси
+			</h3>
+		</div>
 	</div>
+
+	<div class="container">
+		<div class="row">
+			{% for course in object_list %}
+				<div class="col-md-4 col-sm-6">
+					<div class="card card-just-text" data-background="color" data-color="green">
+						<div class="content text center">
+							<h6 class="category">
+								{{ course.subject }}
+							</h6>
+							<h4 class="title">{{ course.title }}</h4>
+							<p class="description">
+								Приступайте до вивчення матеріалу цього курсу прямо зараз!
+							</p>
+						</div>
+						<div class="card-footer btn-center">
+							<a class="btn btn-default btn-round btn-fill btn-primary" href="{% url 'student_course_detail' course.id %}">Переглянути курс</a>
+						</div>
+					</div>
+				</div>
+			{% empty %}
+				<p>
+					You are not enrolled in any courses yet.
+					<a href="{% url 'course_list' %}">Browse courses</a>
+					to enroll in a course.
+				</p>
+			{% endfor %}
+		</div>
+	</div>
+</main>
+
 {% endblock %}

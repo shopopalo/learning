@@ -1,24 +1,40 @@
 {% extends "base.html" %}
 
+{% load add_class %}
+
 {% block title %}
-	Login
+	Вхід до системи
 {% endblock %}
 
 {% block content %}
-	<h1>Login</h1>
-	<div class="module">
-		{% if form.errors %}
-			<p>Your username and password are incorrect. Try again.</p>
-		{% else %}
-			<p>Please fill nex form</p>
-		{% endif %}
-		<div class="login-form">
-			<form action="{% url 'login' %}" method="POST">
-				{{ form.as_p }}
-				{% csrf_token %}
-				<input type="hidden" name="next" value="{{ next }}" />
-				<p><input type="submit" value="Login" /></p>
-			</form>
+<main>
+	<div class="background" style="background-image: url('../../static/img/background.jpg');">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<div class="demo-card">
+						<h3 class="title">Welcome</h3>
+						<form action="{% url 'login' %}" class="register-form" method="POST">
+							{{ form.username.label_tag }}
+							{{ form.username|addclass:'form-control' }}
+							<br />
+							{{ form.password.label_tag }}
+							{{ form.password|addclass:'form-control' }}
+							{% csrf_token %}
+							<br />
+							<input type="hidden" name="next" value="{{ next }}" />
+							<p><input type="submit" class="btn btn-fill btn-block" value="Ввійти" /></p>
+						</form>
+						<div class="login-link">
+							Не маєте акаунта?<br />
+							<a href="{% url 'student_registration' %}">
+								Зареєструйтесь зараз
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+</main>
 {% endblock %}
